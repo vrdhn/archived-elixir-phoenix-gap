@@ -1,4 +1,4 @@
-defmodule GapWeb.PageController do
+defmodule GapWeb.PlatController do
   use GapWeb, :controller
 
   def home(conn, _params) do

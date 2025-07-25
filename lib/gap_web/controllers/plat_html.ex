@@ -1,4 +1,4 @@
-defmodule GapWeb.PageHTML do
+defmodule GapWeb.PlatHTML do
   @moduledoc """
   This module contains pages rendered by PageController.
 
@@ -6,5 +6,5 @@ defmodule GapWeb.PageHTML do
   """
   use GapWeb, :html
 
-  embed_templates "page_html/*"
+  embed_templates "plat_html/*"
 end
