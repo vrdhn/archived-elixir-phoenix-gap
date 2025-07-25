@@ -17,7 +17,7 @@ defmodule GapWeb.Router do
   scope "/", GapWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/", PlatController, :home
   end
 
   # Other scopes may use custom stacks.
