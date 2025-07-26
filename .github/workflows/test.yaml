@@ -1,0 +1,57 @@
+name: Test and Coverage
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        ports: ['5432:5432']
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gap_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      MIX_ENV: test
+      DATABASE_URL: ecto://postgres:postgres@localhost/gap_test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Elixir and Erlang
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.18'
+          otp-version: '27'
+
+      - name: Cache deps and build
+        uses: actions/cache@v3
+        with:
+          path: |
+            deps
+            _build
+          key: deps-build-${{ runner.os }}-elixir-1.18-otp-27-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-build-${{ runner.os }}-elixir-1.18-otp-27-
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Create and migrate database
+        run: mix ecto.create && mix ecto.migrate
+
+      - name: Run tests with coverage
+        run: mix coveralls.github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
