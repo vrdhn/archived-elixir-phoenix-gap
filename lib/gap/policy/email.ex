@@ -12,7 +12,14 @@ defmodule Gap.Policy.EMail do
   hash a email.
   """
   def hash_email(email) do
-    UniqueHash.hash(@tokenprefix, email)
+    UniqueHash.hash(@tokenprefix, normalize_email(email))
+  end
+
+  @doc """
+  normalize a email, trim and lowercae for now
+  """
+  def normalize_email(email) do
+    email |> String.trim() |> String.downcase()
   end
 
   @doc """
