@@ -92,8 +92,9 @@ defmodule Gap.MixProject do
         "phx.digest"
       ],
       c: ["coveralls.html"],
-      s: ["phx.server"],
-      t: ["test"]
+      s: ["format", "compile", "phx.server"],
+      t: ["test"],
+      m: ["format", "compile"]
     ]
   end
 end

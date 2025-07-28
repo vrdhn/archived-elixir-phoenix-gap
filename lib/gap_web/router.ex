@@ -1,6 +1,8 @@
 defmodule GapWeb.Router do
   use GapWeb, :router
 
+  import GapWeb.Auth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -39,6 +41,15 @@ defmodule GapWeb.Router do
 
       live_dashboard "/dashboard", metrics: GapWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
+  end
+
+  scope "/", GapWeb do
+    pipe_through [:browser, :need_user]
+
+    live_session :need_user,
+      on_mount: [{GapWeb.Auth, :need_user}] do
+      live "/groups", Live.GroupLive
     end
   end
 end
