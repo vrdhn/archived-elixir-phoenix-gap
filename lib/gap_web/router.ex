@@ -54,6 +54,8 @@ defmodule GapWeb.Router do
   end
 
   pipeline :need_user do
-    plug GapWeb.Plug.SesionCookie
+    plug GapWeb.Plug.SesionCookie,
+      current_time: DateTime.utc_now(),
+      session_lifetime: 60 * 60 * 24 * 365
   end
 end
