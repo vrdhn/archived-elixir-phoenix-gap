@@ -6,12 +6,8 @@ defmodule Gap.Context.Accounts do
   import Ecto.Query, warn: false
   alias Gap.Repo
 
-  alias Gap.Schema.User
-  alias Gap.Schema.Group
-  alias Gap.Schema.Member
-  alias Gap.Policy.Token
-  alias Gap.Policy.EMail
-  alias Gap.Policy.FakeName
+  alias Gap.Schema.{User, Group, Member, Session}
+  alias Gap.Policy.{Token, EMail, FakeName}
 
   @doc """
   Creates a user with a fake name, generated token, and empty email hash.
@@ -178,5 +174,38 @@ defmodule Gap.Context.Accounts do
         select: %{group: g, member: m}
 
     Repo.all(query)
+  end
+
+  @doc """
+  Updates or inserts a session with the given session_cookie and auth_token.
+  """
+  def update_session_token(session_cookie, auth_token) do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    Repo.insert(
+      %Session{
+        session_cookie: session_cookie,
+        auth_token: auth_token,
+        inserted_at: now,
+        updated_at: now
+      },
+      on_conflict: [
+        set: [
+          auth_token: auth_token,
+          updated_at: now
+        ]
+      ],
+      conflict_target: :session_cookie
+    )
+  end
+
+  @doc """
+  Finds the auth_token associated with the given session_cookie.
+  """
+  def find_token_from_session(session_cookie) do
+    case Repo.get_by(Session, session_cookie: session_cookie) do
+      nil -> nil
+      session -> session.auth_token
+    end
   end
 end

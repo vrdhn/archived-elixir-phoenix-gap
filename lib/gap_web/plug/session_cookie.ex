@@ -48,7 +48,7 @@ defmodule GapWeb.Plug.SesionCookie do
         |> put_resp_cookie(@cookie_key, signed_token, cookie_opts(lifetime))
         |> put_session(:session_cookie, token)
         |> put_session(:session_cookie_expires_at, expires_at)
-        |> put_session(:session_cookie_status, "new")
+        |> put_session(:session_cookie_status, :new)
 
       signed_token ->
         token =
@@ -63,7 +63,7 @@ defmodule GapWeb.Plug.SesionCookie do
         |> put_resp_cookie(@cookie_key, signed_token, cookie_opts(lifetime))
         |> put_session(:session_cookie, token)
         |> put_session(:session_cookie_expires_at, expires_at)
-        |> put_session(:session_cookie_status, "existing")
+        |> put_session(:session_cookie_status, :old)
     end
   end
 
@@ -84,5 +84,9 @@ defmodule GapWeb.Plug.SesionCookie do
   defp generate_token do
     :crypto.strong_rand_bytes(32)
     |> Base.url_encode64(padding: false)
+  end
+
+  def testing_cookie() do
+    generate_token() |> sign()
   end
 end

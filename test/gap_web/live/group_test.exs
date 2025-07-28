@@ -5,6 +5,6 @@ defmodule GapWeb.Live.GroupLiveTest do
   test "displays the welcome message", %{conn: conn} do
     {:ok, view, html} = live(conn, ~p"/groups")
 
-    assert html =~ "Group Membership"
+    assert html =~ "Your groups"
   end
 end
