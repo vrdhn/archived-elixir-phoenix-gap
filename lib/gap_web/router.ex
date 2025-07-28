@@ -52,4 +52,8 @@ defmodule GapWeb.Router do
       live "/groups", Live.GroupLive
     end
   end
+
+  pipeline :need_user do
+    plug GapWeb.Plug.SesionCookie
+  end
 end
