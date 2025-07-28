@@ -28,7 +28,7 @@ defmodule GapWeb.Plug.SesionCookieTest do
       status = get_session(conn, :session_cookie_status)
 
       assert token != nil
-      assert status == "new"
+      assert status == :new
       assert expires_at == DateTime.add(@fixed_now, @one_year_secs, :second)
     end
 
@@ -59,7 +59,7 @@ defmodule GapWeb.Plug.SesionCookieTest do
 
       assert is_binary(new_signed_token)
       assert reused_token == original_token
-      assert status == "existing"
+      assert status == :old
       assert expires_at == DateTime.add(@fixed_now, @one_year_secs, :second)
     end
   end

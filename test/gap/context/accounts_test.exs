@@ -2,7 +2,7 @@ defmodule Gap.Context.AccountsTest do
   use Gap.DataCase
 
   alias Gap.Context.Accounts
-  alias Gap.Schema.{User, Group, Member}
+  alias Gap.Schema.{User, Group, Member, Session}
   alias Gap.Policy.{Token, EMail}
 
   describe "create_user/0" do
@@ -356,6 +356,66 @@ defmodule Gap.Context.AccountsTest do
       user2_groups = Accounts.find_groups(user2.id)
       assert length(user2_groups) == 1
       assert hd(user2_groups).group.name == "Engineering"
+    end
+  end
+
+  describe "update_session_token/2 and find_token_from_session/1" do
+    test "inserts new session and retrieves auth_token" do
+      session_cookie = "cookie123"
+      auth_token = "tokenABC"
+
+      {:ok, _session} = Accounts.update_session_token(session_cookie, auth_token)
+      assert Accounts.find_token_from_session(session_cookie) == auth_token
+    end
+
+    test "updates existing session's auth_token" do
+      session_cookie = "cookie456"
+      old_token = "oldToken"
+      new_token = "newToken"
+
+      # Insert old session
+      {:ok, _session} = Accounts.update_session_token(session_cookie, old_token)
+      assert Accounts.find_token_from_session(session_cookie) == old_token
+
+      # Update it
+      {:ok, _session} = Accounts.update_session_token(session_cookie, new_token)
+      assert Accounts.find_token_from_session(session_cookie) == new_token
+    end
+
+    test "returns nil for non-existent session" do
+      assert Accounts.find_token_from_session("nonexistent_cookie") == nil
+    end
+
+    test "upsert does not raise on duplicate session_cookie and updates auth_token" do
+      session_cookie = "upsert_cookie"
+      first_token = "token_one"
+      updated_token = "token_two"
+
+      # First insert
+      {:ok, _session1} = Accounts.update_session_token(session_cookie, first_token)
+      assert Accounts.find_token_from_session(session_cookie) == first_token
+
+      # Attempt upsert (should update the token, not raise)
+      {:ok, _session2} = Accounts.update_session_token(session_cookie, updated_token)
+      assert Accounts.find_token_from_session(session_cookie) == updated_token
+    end
+
+    test "raises unique constraint error on duplicate session_cookie without upsert" do
+      valid_attrs = %{session_cookie: "duplicate_cookie", auth_token: "token123"}
+
+      # First insert should succeed
+      {:ok, _session} =
+        %Session{}
+        |> Session.changeset(valid_attrs)
+        |> Repo.insert()
+
+      # Second insert should fail due to unique constraint
+      {:error, changeset} =
+        %Session{}
+        |> Session.changeset(valid_attrs)
+        |> Repo.insert()
+
+      assert %{session_cookie: ["has already been taken"]} = errors_on(changeset)
     end
   end
 end
