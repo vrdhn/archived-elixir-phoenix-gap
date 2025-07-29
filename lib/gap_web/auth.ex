@@ -14,7 +14,7 @@ defmodule GapWeb.Auth do
         },
         socket
       ) do
-    {user, msgcode} = figure_out_user(params["auth_token"], cookie, status)
+    {user, msgcode} = figure_out_user(params["user_token"], cookie, status)
 
     {message, error, update} =
       case msgcode do
@@ -26,7 +26,7 @@ defmodule GapWeb.Auth do
       end
 
     if update do
-      Accounts.update_session_token(cookie, user.auth_token)
+      Accounts.update_session_token(cookie, user.user_token)
     end
 
     {:cont,
@@ -37,16 +37,16 @@ defmodule GapWeb.Auth do
   end
 
   @doc "visible_or_Testing"
-  def figure_out_user(url_auth_token, session_cookie, cookie_status) do
+  def figure_out_user(url_user_token, session_cookie, cookie_status) do
     cond do
-      url_auth_token -> process_url_auto_token(url_auth_token)
+      url_user_token -> process_url_auto_token(url_user_token)
       cookie_status == :old -> process_session_cookie(session_cookie)
       true -> {unwrap(Accounts.create_user()), :oknew}
     end
   end
 
-  defp process_url_auto_token(url_auth_token) do
-    case Accounts.find_user_by_token(url_auth_token) do
+  defp process_url_auto_token(url_user_token) do
+    case Accounts.find_user_by_token(url_user_token) do
       nil -> {unwrap(Accounts.create_user()), :badurltoken}
       user -> {user, :okurl}
     end

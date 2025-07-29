@@ -23,7 +23,7 @@ defmodule Gap.Context.Accounts do
   def create_user do
     attrs = %{
       name: FakeName.generate(),
-      auth_token: Token.create_token(),
+      user_token: Token.create_token(),
       email_hash: nil
     }
 
@@ -66,7 +66,7 @@ defmodule Gap.Context.Accounts do
     case Token.is_token(token) do
       true ->
         User
-        |> where([u], u.auth_token == ^token)
+        |> where([u], u.user_token == ^token)
         |> Repo.one()
 
       false ->
@@ -89,7 +89,7 @@ defmodule Gap.Context.Accounts do
     new_token = Token.create_token()
 
     user
-    |> User.changeset(%{auth_token: new_token})
+    |> User.changeset(%{user_token: new_token})
     |> Repo.update()
   end
 
@@ -177,21 +177,21 @@ defmodule Gap.Context.Accounts do
   end
 
   @doc """
-  Updates or inserts a session with the given session_cookie and auth_token.
+  Updates or inserts a session with the given session_cookie and user_token.
   """
-  def update_session_token(session_cookie, auth_token) do
+  def update_session_token(session_cookie, user_token) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
     Repo.insert(
       %Session{
         session_cookie: session_cookie,
-        auth_token: auth_token,
+        user_token: user_token,
         inserted_at: now,
         updated_at: now
       },
       on_conflict: [
         set: [
-          auth_token: auth_token,
+          user_token: user_token,
           updated_at: now
         ]
       ],
@@ -200,12 +200,12 @@ defmodule Gap.Context.Accounts do
   end
 
   @doc """
-  Finds the auth_token associated with the given session_cookie.
+  Finds the user_token associated with the given session_cookie.
   """
   def find_token_from_session(session_cookie) do
     case Repo.get_by(Session, session_cookie: session_cookie) do
       nil -> nil
-      session -> session.auth_token
+      session -> session.user_token
     end
   end
 end

@@ -12,7 +12,7 @@ defmodule Gap.Context.AccountsTest do
       assert user.id != nil
       assert is_binary(user.name)
       assert user.name != ""
-      assert Token.is_token(user.auth_token)
+      assert Token.is_token(user.user_token)
       assert user.email_hash == nil
       assert user.inserted_at != nil
       assert user.updated_at != nil
@@ -22,7 +22,7 @@ defmodule Gap.Context.AccountsTest do
       assert {:ok, user1} = Accounts.create_user()
       assert {:ok, user2} = Accounts.create_user()
 
-      assert user1.auth_token != user2.auth_token
+      assert user1.user_token != user2.user_token
     end
   end
 
@@ -67,10 +67,10 @@ defmodule Gap.Context.AccountsTest do
     end
 
     test "finds user by valid token", %{user: user} do
-      found_user = Accounts.find_user_by_token(user.auth_token)
+      found_user = Accounts.find_user_by_token(user.user_token)
 
       assert found_user.id == user.id
-      assert found_user.auth_token == user.auth_token
+      assert found_user.user_token == user.user_token
     end
 
     test "returns nil for non-existent token" do
@@ -93,16 +93,16 @@ defmodule Gap.Context.AccountsTest do
     end
 
     test "regenerates token for user", %{user: user} do
-      original_token = user.auth_token
+      original_token = user.user_token
 
       assert {:ok, updated_user} = Accounts.regenerate_user_token(user)
-      assert updated_user.auth_token != original_token
-      assert Token.is_token(updated_user.auth_token)
+      assert updated_user.user_token != original_token
+      assert Token.is_token(updated_user.user_token)
       assert updated_user.id == user.id
     end
 
     test "invalidates old token", %{user: user} do
-      original_token = user.auth_token
+      original_token = user.user_token
 
       assert {:ok, _updated_user} = Accounts.regenerate_user_token(user)
       assert Accounts.find_user_by_token(original_token) == nil
@@ -111,7 +111,7 @@ defmodule Gap.Context.AccountsTest do
     test "new token can be used to find user", %{user: user} do
       assert {:ok, updated_user} = Accounts.regenerate_user_token(user)
 
-      found_user = Accounts.find_user_by_token(updated_user.auth_token)
+      found_user = Accounts.find_user_by_token(updated_user.user_token)
       assert found_user.id == user.id
     end
   end
@@ -314,19 +314,19 @@ defmodule Gap.Context.AccountsTest do
       assert found_user.id == user.id
 
       # Find by token
-      found_user = Accounts.find_user_by_token(user.auth_token)
+      found_user = Accounts.find_user_by_token(user.user_token)
       assert found_user.id == user.id
 
       # Regenerate token
-      old_token = user.auth_token
+      old_token = user.user_token
       assert {:ok, user} = Accounts.regenerate_user_token(user)
-      assert user.auth_token != old_token
+      assert user.user_token != old_token
 
       # Old token should not work
       assert Accounts.find_user_by_token(old_token) == nil
 
       # New token should work
-      found_user = Accounts.find_user_by_token(user.auth_token)
+      found_user = Accounts.find_user_by_token(user.user_token)
       assert found_user.id == user.id
     end
 
@@ -360,15 +360,15 @@ defmodule Gap.Context.AccountsTest do
   end
 
   describe "update_session_token/2 and find_token_from_session/1" do
-    test "inserts new session and retrieves auth_token" do
+    test "inserts new session and retrieves user_token" do
       session_cookie = "cookie123"
-      auth_token = "tokenABC"
+      user_token = "tokenABC"
 
-      {:ok, _session} = Accounts.update_session_token(session_cookie, auth_token)
-      assert Accounts.find_token_from_session(session_cookie) == auth_token
+      {:ok, _session} = Accounts.update_session_token(session_cookie, user_token)
+      assert Accounts.find_token_from_session(session_cookie) == user_token
     end
 
-    test "updates existing session's auth_token" do
+    test "updates existing session's user_token" do
       session_cookie = "cookie456"
       old_token = "oldToken"
       new_token = "newToken"
@@ -386,7 +386,7 @@ defmodule Gap.Context.AccountsTest do
       assert Accounts.find_token_from_session("nonexistent_cookie") == nil
     end
 
-    test "upsert does not raise on duplicate session_cookie and updates auth_token" do
+    test "upsert does not raise on duplicate session_cookie and updates user_token" do
       session_cookie = "upsert_cookie"
       first_token = "token_one"
       updated_token = "token_two"
@@ -401,7 +401,7 @@ defmodule Gap.Context.AccountsTest do
     end
 
     test "raises unique constraint error on duplicate session_cookie without upsert" do
-      valid_attrs = %{session_cookie: "duplicate_cookie", auth_token: "token123"}
+      valid_attrs = %{session_cookie: "duplicate_cookie", user_token: "token123"}
 
       # First insert should succeed
       {:ok, _session} =

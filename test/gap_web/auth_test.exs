@@ -5,15 +5,15 @@ defmodule GapWeb.AuthTest do
   alias Gap.Context.Accounts
 
   describe "figure_out_user/3 with real database" do
-    test "uses valid auth_token from URL (msgcode: :okurl)" do
+    test "uses valid user_token from URL (msgcode: :okurl)" do
       {:ok, user} = Accounts.create_user()
-      {result_user, code} = Auth.figure_out_user(user.auth_token, "ignored", :new)
+      {result_user, code} = Auth.figure_out_user(user.user_token, "ignored", :new)
 
       assert result_user.id == user.id
       assert code == :okurl
     end
 
-    test "falls back when auth_token is invalid (msgcode: :badurltoken)" do
+    test "falls back when user_token is invalid (msgcode: :badurltoken)" do
       {user, code} = Auth.figure_out_user("invalid_token", "cookie", :new)
 
       assert is_map(user)
@@ -23,7 +23,7 @@ defmodule GapWeb.AuthTest do
     test "uses valid session cookie (msgcode: :okcookie)" do
       {:ok, user} = Accounts.create_user()
       cookie = GapWeb.Plug.SesionCookie.testing_cookie()
-      {:ok, _update_user} = Accounts.update_session_token(cookie, user.auth_token)
+      {:ok, _update_user} = Accounts.update_session_token(cookie, user.user_token)
 
       {result_user, code} = Auth.figure_out_user(nil, cookie, :old)
 

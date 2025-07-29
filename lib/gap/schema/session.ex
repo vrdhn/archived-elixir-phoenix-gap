@@ -4,7 +4,7 @@ defmodule Gap.Schema.Session do
 
   schema "sessions" do
     field :session_cookie, :string
-    field :auth_token, :string
+    field :user_token, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -12,8 +12,8 @@ defmodule Gap.Schema.Session do
   @doc false
   def changeset(session, attrs) do
     session
-    |> cast(attrs, [:session_cookie, :auth_token])
-    |> validate_required([:session_cookie, :auth_token])
+    |> cast(attrs, [:session_cookie, :user_token])
+    |> validate_required([:session_cookie, :user_token])
     |> unique_constraint(:session_cookie)
   end
 end
