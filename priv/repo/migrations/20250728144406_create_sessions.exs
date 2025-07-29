@@ -4,7 +4,7 @@ defmodule Gap.Repo.Migrations.CreateSessions do
   def change do
     create table(:sessions) do
       add :session_cookie, :string
-      add :auth_token, :string
+      add :user_token, :string
 
       timestamps(type: :utc_datetime)
     end
