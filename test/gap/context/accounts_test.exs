@@ -12,7 +12,7 @@ defmodule Gap.Context.AccountsTest do
       assert user.id != nil
       assert is_binary(user.name)
       assert user.name != ""
-      assert Token.is_token(user.user_token)
+      assert Token.is_user_token(user.user_token)
       assert user.email_hash == nil
       assert user.inserted_at != nil
       assert user.updated_at != nil
@@ -74,7 +74,7 @@ defmodule Gap.Context.AccountsTest do
     end
 
     test "returns nil for non-existent token" do
-      fake_token = Token.create_token()
+      fake_token = Token.create_user_token()
       assert Accounts.find_user_by_token(fake_token) == nil
     end
 
@@ -97,7 +97,7 @@ defmodule Gap.Context.AccountsTest do
 
       assert {:ok, updated_user} = Accounts.regenerate_user_token(user)
       assert updated_user.user_token != original_token
-      assert Token.is_token(updated_user.user_token)
+      assert Token.is_user_token(updated_user.user_token)
       assert updated_user.id == user.id
     end
 

@@ -12,19 +12,34 @@ defmodule Gap.Policy.Token do
   """
   alias Gap.Policy.UniqueHash
 
-  @tokenprefix "UA"
+  @usertokenprefix "UA"
+  @grouptokenprefix "GT"
 
   @doc """
   Generate a token. Ussing UUID to ensure that token is globally unique
   """
-  def create_token() do
-    UniqueHash.hash(@tokenprefix, Ecto.UUID.generate())
+  def create_user_token() do
+    UniqueHash.hash(@usertokenprefix, Ecto.UUID.generate())
   end
 
   @doc """
   Check if a given string is a valid token
   """
-  def is_token(token) do
-    UniqueHash.is_prefix(token, @tokenprefix)
+  def is_user_token(token) do
+    UniqueHash.is_prefix(token, @usertokenprefix)
+  end
+
+  @doc """
+  Generate a token. Ussing UUID to ensure that token is globally unique
+  """
+  def create_group_token() do
+    UniqueHash.hash(@grouptokenprefix, Ecto.UUID.generate())
+  end
+
+  @doc """
+  Check if a given string is a valid token
+  """
+  def is_group_token(token) do
+    UniqueHash.is_prefix(token, @grouptokenprefix)
   end
 end
