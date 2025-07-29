@@ -1,4 +1,4 @@
-defmodule Gap.Policy.FakeName do
+defmodule Gap.Policy.FakeUser do
   @moduledoc """
   Generates fake names in adjective-noun format.
   Uses colors, emotions, motion, and other descriptive words as adjectives,

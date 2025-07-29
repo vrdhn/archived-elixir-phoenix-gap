@@ -3,6 +3,7 @@ defmodule Gap.Schema.Group do
   import Ecto.Changeset
 
   schema "groups" do
+    field :group_token, :string
     field :name, :string
 
     timestamps(type: :utc_datetime)
@@ -11,7 +12,8 @@ defmodule Gap.Schema.Group do
   @doc false
   def changeset(group, attrs) do
     group
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :group_token])
+    |> validate_required([:name, :group_token])
+    |> unique_constraint(:group_token)
   end
 end

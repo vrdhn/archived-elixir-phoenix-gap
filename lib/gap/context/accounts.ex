@@ -7,7 +7,7 @@ defmodule Gap.Context.Accounts do
   alias Gap.Repo
 
   alias Gap.Schema.{User, Group, Member, Session}
-  alias Gap.Policy.{Token, EMail, FakeName}
+  alias Gap.Policy.{Token, EMail, FakeUser, FakeGroup}
 
   @doc """
   Creates a user with a fake name, generated token, and empty email hash.
@@ -22,8 +22,8 @@ defmodule Gap.Context.Accounts do
   """
   def create_user do
     attrs = %{
-      name: FakeName.generate(),
-      user_token: Token.create_token(),
+      name: FakeUser.generate(),
+      user_token: Token.create_user_token(),
       email_hash: nil
     }
 
@@ -63,7 +63,7 @@ defmodule Gap.Context.Accounts do
       nil
   """
   def find_user_by_token(token) when is_binary(token) do
-    case Token.is_token(token) do
+    case Token.is_user_token(token) do
       true ->
         User
         |> where([u], u.user_token == ^token)
@@ -86,7 +86,7 @@ defmodule Gap.Context.Accounts do
       {:error, %Ecto.Changeset{}}
   """
   def regenerate_user_token(%User{} = user) do
-    new_token = Token.create_token()
+    new_token = Token.create_user_token()
 
     user
     |> User.changeset(%{user_token: new_token})
@@ -124,8 +124,13 @@ defmodule Gap.Context.Accounts do
       {:error, %Ecto.Changeset{}}
   """
   def create_group(name) when is_binary(name) do
+    attrs = %{
+      name: name,
+      group_token: Token.create_group_token()
+    }
+
     %Group{}
-    |> Group.changeset(%{name: name})
+    |> Group.changeset(attrs)
     |> Repo.insert()
   end
 
