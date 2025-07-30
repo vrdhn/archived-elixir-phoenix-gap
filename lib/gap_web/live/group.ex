@@ -3,7 +3,7 @@ defmodule GapWeb.Live.GroupLive do
 
   alias Gap.Context.Accounts
 
-  def mount(_params, _session, socket) do
+  defp reget_memberships(socket) do
     memberships = Accounts.find_groups(socket.assigns[:current_user].id)
     ## add slug to each membership
     memberships =
@@ -11,8 +11,10 @@ defmodule GapWeb.Live.GroupLive do
         memberships,
         &Map.put(&1, :group_slug, Slug.slugify(&1.group.name))
       )
+  end
 
-    {:ok, assign(socket, :memberships, memberships)}
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, :memberships, reget_memberships(socket))}
   end
 
   def render(assigns) do
@@ -37,7 +39,7 @@ defmodule GapWeb.Live.GroupLive do
         , Your groups ...
       </p>
 
-      <table class="table-auto w-full">
+      <table class="table-auto w-full" id="groups-list">
         <thead>
           <tr>
             <th class="px-4 py-2 text-left">Group</th>
@@ -71,6 +73,7 @@ defmodule GapWeb.Live.GroupLive do
       <p></p>
       <hr />
       <.button
+        id="new_group_button"
         phx-click="new_group"
         class="button bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-2 px-4 rounded shadow-lg hover:scale-105 transition-transform"
       >
@@ -91,7 +94,6 @@ defmodule GapWeb.Live.GroupLive do
       "owner"
     )
 
-    memberships = Accounts.find_groups(socket.assigns[:current_user].id)
-    {:noreply, assign(socket, :memberships, memberships)}
+    {:noreply, assign(socket, :memberships, reget_memberships(socket))}
   end
 end
