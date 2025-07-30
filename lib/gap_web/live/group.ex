@@ -5,6 +5,13 @@ defmodule GapWeb.Live.GroupLive do
 
   def mount(_params, _session, socket) do
     memberships = Accounts.find_groups(socket.assigns[:current_user].id)
+    ## add slug to each membership
+    memberships =
+      Enum.map(
+        memberships,
+        &Map.put(&1, :group_slug, Slug.slugify(&1.group.name))
+      )
+
     {:ok, assign(socket, :memberships, memberships)}
   end
 
@@ -29,11 +36,35 @@ defmodule GapWeb.Live.GroupLive do
         </span>
         , Your groups ...
       </p>
-      <ul>
-        <%= for membership <- @memberships do %>
-          <li>{membership.member.name}@{membership.group.name} .. {membership.member.role}</li>
-        <% end %>
-      </ul>
+
+      <table class="table-auto w-full">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 text-left">Group</th>
+            <th class="px-4 py-2 text-left">Role</th>
+            <th class="px-4 py-2 text-left">Manage</th>
+            <th class="px-4 py-2 text-left">Chats</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for m <- Enum.sort_by(@memberships, & &1.group_slug) do %>
+            <tr>
+              <td class="border px-4 py-2">{m.group.name}</td>
+              <td class="border px-4 py-2">{m.member.role}</td>
+              <td class="border px-4 py-2">
+                <a href={"/groups/manage/#{m.group_slug}"}>
+                  <.icon name="hero-cog-6-tooth" class="h-5 w-5 text-gray-500" />
+                </a>
+              </td>
+              <td class="border px-4 py-2">
+                <a href={"/groups/chat/#{m.group_slug}"}>
+                  <.icon name="hero-users" class="h-5 w-5 text-gray-500" />
+                </a>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
     <div>
       <hr />
