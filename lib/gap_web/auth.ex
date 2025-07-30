@@ -8,7 +8,7 @@ defmodule GapWeb.Auth do
         %{
           # always valid.
           "session_cookie" => cookie,
-          "session_cookie_expires_at" => expires_at,
+          "session_cookie_expires_at" => _expires_at,
           # :new, :old
           "session_cookie_status" => status
         },

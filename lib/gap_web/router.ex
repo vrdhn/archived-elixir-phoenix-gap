@@ -1,8 +1,6 @@
 defmodule GapWeb.Router do
   use GapWeb, :router
 
-  import GapWeb.Auth
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session

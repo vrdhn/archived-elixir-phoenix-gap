@@ -7,7 +7,7 @@ defmodule Gap.Context.Accounts do
   alias Gap.Repo
 
   alias Gap.Schema.{User, Group, Member, Session}
-  alias Gap.Policy.{Token, EMail, FakeUser, FakeGroup}
+  alias Gap.Policy.{Token, EMail, FakeUser}
 
   @doc """
   Creates a user with a fake name, generated token, and empty email hash.

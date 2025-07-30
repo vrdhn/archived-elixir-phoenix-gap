@@ -6,11 +6,10 @@ defmodule GapWeb.Live.GroupLive do
   defp reget_memberships(socket) do
     memberships = Accounts.find_groups(socket.assigns[:current_user].id)
     ## add slug to each membership
-    memberships =
-      Enum.map(
-        memberships,
-        &Map.put(&1, :group_slug, Slug.slugify(&1.group.name))
-      )
+    Enum.map(
+      memberships,
+      &Map.put(&1, :group_slug, Slug.slugify(&1.group.name))
+    )
   end
 
   def mount(_params, _session, socket) do
@@ -22,13 +21,13 @@ defmodule GapWeb.Live.GroupLive do
     <div>
       <%= if Phoenix.Flash.get(@flash, :info) do %>
         <div class="rounded bg-green-100 text-green-800 px-4 py-2 mb-2 border border-green-300">
-          {live_flash(@flash, :info)}
+          {Phoenix.Flash.get(@flash, :info)}
         </div>
       <% end %>
 
-      <%= if live_flash(@flash, :error) do %>
+      <%= if Phoenix.Flash.get(@flash, :error) do %>
         <div class="rounded bg-red-100 text-red-800 px-4 py-2 mb-2 border border-red-300">
-          {live_flash(@flash, :error)}
+          {Phoenix.Flash.get(@flash, :error)}
         </div>
       <% end %>
       <p>

@@ -3,7 +3,7 @@ defmodule GapWeb.Live.GroupLiveTest do
   import Phoenix.LiveViewTest
 
   test "displays the welcome message", %{conn: conn} do
-    {:ok, view, html} = live(conn, ~p"/groups")
+    {:ok, _view, html} = live(conn, ~p"/groups")
 
     assert html =~ "Your groups"
   end
@@ -22,7 +22,6 @@ defmodule GapWeb.Live.GroupLiveTest do
       |> render_click()
 
     {:ok, document} = Floki.parse_document(html_grp1)
-    IO.inspect(document)
     assert Floki.find(document, "table#groups-list tbody tr") |> length() == 1
   end
 end
