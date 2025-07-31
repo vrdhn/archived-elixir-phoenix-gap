@@ -47,7 +47,11 @@ defmodule GapWeb.Router do
 
     live_session :need_user,
       on_mount: [{GapWeb.Auth, :need_user}] do
-      live "/groups", Live.GroupLive
+      live "/groups", Live.GroupList
+      live "/groups/chat", Live.GroupChat
+      live "/groups/chat/:groupslug", Live.GroupChat
+      live "/groups/manage/", Live.GroupManage
+      live "/groups/manage/:groupslug", Live.GroupManage
     end
   end
 

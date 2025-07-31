@@ -45,7 +45,7 @@ defmodule Gap.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 1.0"},
+      {:phoenix_live_view, "~> 1.1"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
@@ -66,7 +66,9 @@ defmodule Gap.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:slugify, "~> 1.3.1"},
-      {:excoveralls, "~> 0.18", only: [:test, :dev]}
+      {:lazy_html, ">= 0.1.0", only: :test},
+      {:excoveralls, "~> 0.18", only: [:test, :dev]},
+      {:observer_cli, "~> 1.7", only: [:dev, :test]}
     ]
   end
 
