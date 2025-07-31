@@ -1,4 +1,4 @@
-defmodule GapWeb.Live.GroupLive do
+defmodule GapWeb.Live.GroupList do
   use GapWeb, :live_view
 
   alias Gap.Context.Accounts
@@ -48,19 +48,27 @@ defmodule GapWeb.Live.GroupLive do
           </tr>
         </thead>
         <tbody>
-          <%= for m <- Enum.sort_by(@memberships, & &1.group_slug) do %>
+          <%= for {m,idx} <- Enum.sort_by(@memberships, & &1.group_slug) |> Enum.with_index() do %>
             <tr>
               <td class="border px-4 py-2">{m.group.name}</td>
               <td class="border px-4 py-2">{m.member.role}</td>
               <td class="border px-4 py-2">
-                <a href={"/groups/manage/#{m.group_slug}"}>
+                <.link
+                  patch={~p"/groups/manage/#{m.group_slug}"}
+                  class="text-blue-500"
+                  id={"manage-#{idx}"}
+                >
                   <.icon name="hero-cog-6-tooth" class="h-5 w-5 text-gray-500" />
-                </a>
+                </.link>
               </td>
               <td class="border px-4 py-2">
-                <a href={"/groups/chat/#{m.group_slug}"}>
+                <.link
+                  patch={~p"/groups/chat/#{m.group_slug}"}
+                  class="text-blue-500"
+                  id={"chat-#{idx}"}
+                >
                   <.icon name="hero-users" class="h-5 w-5 text-gray-500" />
-                </a>
+                </.link>
               </td>
             </tr>
           <% end %>
