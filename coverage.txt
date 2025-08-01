@@ -1,0 +1,31 @@
+----------------
+COV    FILE                                        LINES RELEVANT   MISSED
+  0.0% lib/gap.ex                                      9        0        0
+ 80.0% lib/gap/application.ex                         36        5        1
+100.0% lib/gap/context/accounts.ex                   216       25        0
+  0.0% lib/gap/mailer.ex                               3        0        0
+100.0% lib/gap/policy/email.ex                        31        3        0
+100.0% lib/gap/policy/fake_group.ex                  200        1        0
+100.0% lib/gap/policy/fake_user.ex                    56        3        0
+100.0% lib/gap/policy/token.ex                        45        4        0
+100.0% lib/gap/policy/unique_hash.ex                  37        7        0
+  0.0% lib/gap/repo.ex                                 5        0        0
+100.0% lib/gap/schema/group.ex                        19        2        0
+100.0% lib/gap/schema/member.ex                       21        2        0
+100.0% lib/gap/schema/session.ex                      19        2        0
+100.0% lib/gap/schema/user.ex                         21        2        0
+100.0% lib/gap_web.ex                                116        2        0
+ 82.6% lib/gap_web/auth.ex                            71       23        4
+  0.0% lib/gap_web/components/layouts.ex              14        0        0
+100.0% lib/gap_web/controllers/error_html.ex          24        1        0
+100.0% lib/gap_web/controllers/error_json.ex          21        1        0
+100.0% lib/gap_web/controllers/plat_controller.        9        1        0
+  0.0% lib/gap_web/controllers/plat_html.ex           10        0        0
+  0.0% lib/gap_web/endpoint.ex                        53        0        0
+  0.0% lib/gap_web/gettext.ex                         25        0        0
+ 95.4% lib/gap_web/live/group.ex                      98       22        1
+ 90.9% lib/gap_web/plug/session_cookie.ex             92       22        2
+ 80.0% lib/gap_web/router.ex                          59        5        1
+ 80.0% lib/gap_web/telemetry.ex                       93        5        1
+[TOTAL]  92.7%
+----------------
