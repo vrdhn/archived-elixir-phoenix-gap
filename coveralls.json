@@ -1,5 +1,10 @@
 {
-  "coverage_options": {
-    "minimum_coverage": 56
-  }
+    "coverage_options": {
+	"minimum_coverage": 92
+    },
+    "skip_files": [
+	"lib/gap_web/components/core_components.ex",
+	"test/"
+    ]
+
 }

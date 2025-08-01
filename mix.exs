@@ -14,9 +14,6 @@ defmodule Gap.MixProject do
       preferred_cli_env: [
         c: :test,
         coveralls: :test,
-        "coveralls.detail": :test,
-        "coveralls.json": :test,
-        "coveralls.post": :test,
         "coveralls.html": :test,
         t: :test
       ]
