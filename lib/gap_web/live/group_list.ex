@@ -12,10 +12,17 @@ defmodule GapWeb.Live.GroupList do
     )
   end
 
+  @impl true
+  def handle_params(_params, _uri, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, :memberships, reget_memberships(socket))}
   end
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div>
@@ -54,7 +61,7 @@ defmodule GapWeb.Live.GroupList do
               <td class="border px-4 py-2">{m.member.role}</td>
               <td class="border px-4 py-2">
                 <.link
-                  patch={~p"/groups/manage/#{m.group_slug}"}
+                  navigate={~p"/groups/manage/#{m.group_slug}"}
                   class="text-blue-500"
                   id={"manage-#{idx}"}
                 >
@@ -63,7 +70,7 @@ defmodule GapWeb.Live.GroupList do
               </td>
               <td class="border px-4 py-2">
                 <.link
-                  patch={~p"/groups/chat/#{m.group_slug}"}
+                  navigate={~p"/groups/chat/#{m.group_slug}"}
                   class="text-blue-500"
                   id={"chat-#{idx}"}
                 >
@@ -90,6 +97,7 @@ defmodule GapWeb.Live.GroupList do
     """
   end
 
+  @impl true
   def handle_event("new_group", _params, socket) do
     # Probablymaking group and assigned user as adminshould move elsewhere.
     {:ok, group} = Accounts.create_group(Gap.Policy.FakeGroup.generate())

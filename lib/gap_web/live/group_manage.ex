@@ -1,4 +1,4 @@
-defmodule GapWeb.Live.GroupChat do
+defmodule GapWeb.Live.GroupManage do
   use GapWeb, :live_view
 
   @impl true
@@ -28,7 +28,7 @@ defmodule GapWeb.Live.GroupChat do
       <% end %>
     </div>
     <div>
-      CHAT
+      MANAGE
     </div>
     """
   end
