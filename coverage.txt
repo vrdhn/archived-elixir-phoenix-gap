@@ -10,12 +10,12 @@ COV    FILE                                        LINES RELEVANT   MISSED
 100.0% lib/gap/policy/token.ex                        45        4        0
 100.0% lib/gap/policy/unique_hash.ex                  37        7        0
   0.0% lib/gap/repo.ex                                 5        0        0
-100.0% lib/gap/schema/group.ex                        19        2        0
-100.0% lib/gap/schema/member.ex                       21        2        0
-100.0% lib/gap/schema/session.ex                      19        2        0
-100.0% lib/gap/schema/user.ex                         21        2        0
+100.0% lib/gap/schema/group.ex                        22        2        0
+100.0% lib/gap/schema/member.ex                       24        2        0
+100.0% lib/gap/schema/session.ex                      22        2        0
+100.0% lib/gap/schema/user.ex                         24        2        0
 100.0% lib/gap_web.ex                                116        2        0
- 82.6% lib/gap_web/auth.ex                            71       23        4
+ 82.6% lib/gap_web/auth.ex                            74       23        4
   0.0% lib/gap_web/components/layouts.ex              14        0        0
 100.0% lib/gap_web/controllers/error_html.ex          24        1        0
 100.0% lib/gap_web/controllers/error_json.ex          21        1        0
@@ -23,9 +23,9 @@ COV    FILE                                        LINES RELEVANT   MISSED
   0.0% lib/gap_web/controllers/plat_html.ex           10        0        0
   0.0% lib/gap_web/endpoint.ex                        53        0        0
   0.0% lib/gap_web/gettext.ex                         25        0        0
- 71.4% lib/gap_web/live/group_chat.ex                 35        7        2
- 96.5% lib/gap_web/live/group_list.ex                114       29        1
- 71.4% lib/gap_web/live/group_manage.ex               35        7        2
+ 71.4% lib/gap_web/live/group_chat.ex                 38        7        2
+ 96.5% lib/gap_web/live/group_list.ex                117       29        1
+ 71.4% lib/gap_web/live/group_manage.ex               38        7        2
  90.9% lib/gap_web/plug/session_cookie.ex             92       22        2
  88.8% lib/gap_web/router.ex                          63        9        1
  80.0% lib/gap_web/telemetry.ex                       93        5        1
