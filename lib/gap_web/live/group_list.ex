@@ -1,4 +1,7 @@
 defmodule GapWeb.Live.GroupList do
+  @moduledoc """
+  /group handler
+  """
   use GapWeb, :live_view
 
   alias Gap.Context.Accounts

@@ -1,4 +1,7 @@
 defmodule Gap.Schema.Session do
+  @moduledoc """
+  The Session Schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

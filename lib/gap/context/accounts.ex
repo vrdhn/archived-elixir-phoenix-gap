@@ -6,8 +6,8 @@ defmodule Gap.Context.Accounts do
   import Ecto.Query, warn: false
   alias Gap.Repo
 
-  alias Gap.Schema.{User, Group, Member, Session}
-  alias Gap.Policy.{Token, EMail, FakeUser}
+  alias Gap.Schema.{Group, Member, Session, User}
+  alias Gap.Policy.{EMail, FakeUser, Token}
 
   @doc """
   Creates a user with a fake name, generated token, and empty email hash.
@@ -63,7 +63,7 @@ defmodule Gap.Context.Accounts do
       nil
   """
   def find_user_by_token(token) when is_binary(token) do
-    case Token.is_user_token(token) do
+    case Token.user_token?(token) do
       true ->
         User
         |> where([u], u.user_token == ^token)

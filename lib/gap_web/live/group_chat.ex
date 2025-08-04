@@ -1,4 +1,7 @@
 defmodule GapWeb.Live.GroupChat do
+  @moduledoc """
+  /group/chat handler
+  """
   use GapWeb, :live_view
 
   @impl true

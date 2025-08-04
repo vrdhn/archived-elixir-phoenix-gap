@@ -1,4 +1,7 @@
 defmodule Gap.Schema.Group do
+  @moduledoc """
+  The Group Schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

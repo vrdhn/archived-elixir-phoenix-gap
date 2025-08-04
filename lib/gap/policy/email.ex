@@ -25,7 +25,7 @@ defmodule Gap.Policy.EMail do
   @doc """
   Check if a given string is a valid token
   """
-  def is_email(token) do
+  def email?(token) do
     UniqueHash.is_prefix(token, @tokenprefix)
   end
 end

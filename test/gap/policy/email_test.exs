@@ -3,7 +3,7 @@ defmodule Gap.Policy.EMailTest do
 
   alias Gap.Policy.EMail
 
-  describe "hash_email/1 and is_email/1 black-box behavior" do
+  describe "hash_email/1 and email?/1 black-box behavior" do
     test "hash_email returns a non-empty string containing colon" do
       email = "alice@example.com"
       token = EMail.hash_email(email)
@@ -14,18 +14,18 @@ defmodule Gap.Policy.EMailTest do
       assert byte_size(token) > 20
     end
 
-    test "is_email returns true for a valid hashed email token" do
+    test "email? returns true for a valid hashed email token" do
       email = "bob@example.com"
       token = EMail.hash_email(email)
 
-      assert EMail.is_email(token)
+      assert EMail.email?(token)
     end
 
-    test "is_email returns false for invalid inputs" do
-      assert EMail.is_email("") == false
-      assert EMail.is_email("randomstring") == false
-      assert EMail.is_email("prefix:short") == false
-      assert EMail.is_email("token:!!!notbase64===") == false
+    test "email? returns false for invalid inputs" do
+      assert EMail.email?("") == false
+      assert EMail.email?("randomstring") == false
+      assert EMail.email?("prefix:short") == false
+      assert EMail.email?("token:!!!notbase64===") == false
     end
 
     test "hash_email returns different tokens for different emails" do
