@@ -15,7 +15,8 @@ defmodule Gap.MixProject do
         c: :test,
         coveralls: :test,
         "coveralls.html": :test,
-        t: :test
+        t: :test,
+        "test.watch": :test
       ]
     ]
   end
@@ -68,7 +69,10 @@ defmodule Gap.MixProject do
       {:slugify, "~> 1.3.1"},
       {:lazy_html, ">= 0.1.0", only: :test},
       {:excoveralls, "~> 0.18", only: [:test, :dev]},
-      {:observer_cli, "~> 1.7", only: [:dev, :test]}
+      {:observer_cli, "~> 1.7", only: [:dev, :test]},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -94,7 +98,8 @@ defmodule Gap.MixProject do
       c: ["coveralls.html"],
       s: ["format", "compile", "phx.server"],
       t: ["test"],
-      m: ["format", "compile"]
+      m: ["format", "compile"],
+      w: ["test.watch"]
     ]
   end
 end
