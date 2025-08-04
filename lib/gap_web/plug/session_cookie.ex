@@ -86,7 +86,7 @@ defmodule GapWeb.Plug.SesionCookie do
     |> Base.url_encode64(padding: false)
   end
 
-  def testing_cookie() do
+  def testing_cookie do
     generate_token() |> sign()
   end
 end

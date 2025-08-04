@@ -1,4 +1,7 @@
 defmodule GapWeb.Auth do
+  @moduledoc """
+  Handles auth for /groups and pages below it.
+  """
   use GapWeb, :live_view
   alias Gap.Context.Accounts
 

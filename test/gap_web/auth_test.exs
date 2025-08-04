@@ -1,8 +1,8 @@
 defmodule GapWeb.AuthTest do
   use Gap.DataCase, async: true
 
-  alias GapWeb.Auth
   alias Gap.Context.Accounts
+  alias GapWeb.Auth
 
   describe "figure_out_user/3 with real database" do
     test "uses valid user_token from URL (msgcode: :okurl)" do

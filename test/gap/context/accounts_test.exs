@@ -2,8 +2,8 @@ defmodule Gap.Context.AccountsTest do
   use Gap.DataCase
 
   alias Gap.Context.Accounts
-  alias Gap.Schema.{User, Group, Member, Session}
-  alias Gap.Policy.{Token, EMail}
+  alias Gap.Policy.{EMail, Token}
+  alias Gap.Schema.{Group, Member, Session, User}
 
   describe "create_user/0" do
     test "creates a user with fake name, token, and empty email hash" do
@@ -12,7 +12,7 @@ defmodule Gap.Context.AccountsTest do
       assert user.id != nil
       assert is_binary(user.name)
       assert user.name != ""
-      assert Token.is_user_token(user.user_token)
+      assert Token.user_token?(user.user_token)
       assert user.email_hash == nil
       assert user.inserted_at != nil
       assert user.updated_at != nil
@@ -97,7 +97,7 @@ defmodule Gap.Context.AccountsTest do
 
       assert {:ok, updated_user} = Accounts.regenerate_user_token(user)
       assert updated_user.user_token != original_token
-      assert Token.is_user_token(updated_user.user_token)
+      assert Token.user_token?(updated_user.user_token)
       assert updated_user.id == user.id
     end
 

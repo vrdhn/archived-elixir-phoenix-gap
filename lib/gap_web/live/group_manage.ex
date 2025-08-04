@@ -1,4 +1,7 @@
 defmodule GapWeb.Live.GroupManage do
+  @moduledoc """
+  /groups/manage hander
+  """
   use GapWeb, :live_view
 
   @impl true
